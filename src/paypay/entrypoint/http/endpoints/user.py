@@ -8,5 +8,7 @@ router = APIRouter(prefix="/users")
 
 
 @router.post("/", status_code=201)
-def create_user(form: UserForm, controller: UserController = Depends(user_controller)) -> User:
+def create_user(
+    form: UserForm, controller: UserController = Depends(user_controller)
+) -> User:
     return controller.register(form=form)

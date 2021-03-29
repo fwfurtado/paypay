@@ -1,12 +1,14 @@
 from src.paypay.converters.user import UserFormToUser
-from src.paypay.exeptions.user import  UserAlreadyExist
+from src.paypay.exeptions.user import UserAlreadyExist
 from src.paypay.forms.user import UserForm
-from src.paypay.repositories.user import  UserRepository
+from src.paypay.repositories.user import UserRepository
 from src.paypay.models.user import User
 
-class UserController:
 
-    def __init__(self, userform_converter: UserFormToUser, user_repository: UserRepository):
+class UserController:
+    def __init__(
+        self, userform_converter: UserFormToUser, user_repository: UserRepository
+    ):
         self.__userform_converter = userform_converter
         self.__user_repository = user_repository
 
@@ -19,6 +21,3 @@ class UserController:
         self.__user_repository.save(user)
 
         return user
-
-
-
