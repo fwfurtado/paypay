@@ -1,9 +1,8 @@
-from pydantic import BaseModel, AnyHttpUrl
+from typing import Optional
+from pydantic import AnyHttpUrl, BaseModel
 
 
 class CreationPaymentForm(BaseModel):
-    user_id: int
     amount: float
-    callback: AnyHttpUrl
-    subject: str
     ref: str
+    callback: Optional[AnyHttpUrl] = None

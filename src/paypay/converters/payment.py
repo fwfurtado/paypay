@@ -1,14 +1,15 @@
-from src.paypay.models.payment import Payment, PaymentExtraInfo
 from src.paypay.forms.payment import CreationPaymentForm
+from src.paypay.models.payment import Payment, PaymentExtraInfo
+from src.paypay.models.user import User
 
 
 class CreationPaymentToPayment:
-    def convert(self, form: CreationPaymentForm) -> Payment:
+    def convert(self, form: CreationPaymentForm, user: User) -> Payment:
         return Payment(
-            owner=form.user_id,  # type: ignore
+            owner=user,
             ref=form.ref,
             amount=form.amount,
             info=PaymentExtraInfo(
-                callback=form.callback, info={"subject": form.subject}
+                callback=form.callback
             ),
         )

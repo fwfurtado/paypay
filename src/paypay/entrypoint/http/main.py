@@ -2,7 +2,7 @@ import uvicorn  # type: ignore
 
 from fastapi import FastAPI, status, Request
 from fastapi.responses import JSONResponse
-from paypay.entrypoint.http.endpoints import user, payment  # type: ignore
+from paypay.entrypoint.http.endpoints import user, payment, login  # type: ignore
 from paypay.entrypoint.http.errors import HTTP_ERRORS  # type: ignore
 
 
@@ -10,6 +10,7 @@ def build_app() -> FastAPI:
     app = FastAPI()
     app.include_router(user.router, tags=["users"])
     app.include_router(payment.router, tags=["payments"])
+    app.include_router(login.router, tags=["login"])
 
     return app
 

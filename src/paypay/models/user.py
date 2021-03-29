@@ -6,4 +6,5 @@ from typing import Optional
 class User:
     username: str
     password: str
+    token: Optional[str] = None
     id: Optional[int] = None

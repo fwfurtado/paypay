@@ -3,6 +3,7 @@ from asyncio import sleep
 from src.paypay.forms.payment import CreationPaymentForm
 from src.paypay.converters.payment import CreationPaymentToPayment
 from src.paypay.models.payment import Payment
+from src.paypay.models.user import User
 from src.paypay.repositories.payment import PaymentRepository
 from src.paypay.exeptions.payment import NewlyCreatedPayment, PaymentNotFound
 
@@ -16,8 +17,8 @@ class PaymentController:
         self.__creation_payment_converter = creation_payment_converter
         self.__repository = repository
 
-    def __create_payment(self, form: CreationPaymentForm) -> Payment:
-        payment = self.__creation_payment_converter.convert(form=form)
+    def __create_payment(self, form: CreationPaymentForm, user: User) -> Payment:
+        payment = self.__creation_payment_converter.convert(form=form, user=user)
 
         if self.__repository.anyone_is_same(payment=payment):
             raise NewlyCreatedPayment(
@@ -26,8 +27,8 @@ class PaymentController:
 
         return payment
 
-    async def online_pay(self, form: CreationPaymentForm) -> Payment:
-        payment = self.__create_payment(form=form)
+    async def online_pay(self, form: CreationPaymentForm, user: User) -> Payment:
+        payment = self.__create_payment(form=form, user=user)
         await sleep(3)
 
         payment.confirm()
@@ -36,8 +37,8 @@ class PaymentController:
 
         return payment
 
-    async def bank_slip_pay(self, form: CreationPaymentForm) -> Payment:
-        payment = self.__create_payment(form=form)
+    async def bank_slip_pay(self, form: CreationPaymentForm, user: User) -> Payment:
+        payment = self.__create_payment(form=form, user=user)
 
         self.__repository.save(payment=payment)
 

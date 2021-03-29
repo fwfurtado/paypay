@@ -1,7 +1,10 @@
+
 from src.paypay.forms.user import UserForm
+from src.paypay.infra.password import PasswordService
 from src.paypay.models.user import User
 
 
 class UserFormToUser:
-    def convert(self, form: UserForm) -> User:
-        return User(username=form.username, password=form.password)
+
+    def convert(self, form: UserForm, hashed_password: str) -> User:
+        return User(username=form.username, password=hashed_password)
