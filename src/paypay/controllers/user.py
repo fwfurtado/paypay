@@ -1,5 +1,5 @@
 from src.paypay.converters.user import UserFormToUser
-from src.paypay.exeptions.user import UserAlreadyExist
+from src.paypay.exeptions.user import UserAlreadyExist, InvalidUsernamePassword
 from src.paypay.forms.user import UserForm
 from src.paypay.repositories.user import UserRepository
 from src.paypay.models.user import User
@@ -9,11 +9,11 @@ from src.paypay.infra.token import TokenService
 
 class UserController:
     def __init__(
-            self,
-            userform_converter: UserFormToUser,
-            user_repository: UserRepository,
-            password_service: PasswordService,
-            token_service: TokenService,
+        self,
+        userform_converter: UserFormToUser,
+        user_repository: UserRepository,
+        password_service: PasswordService,
+        token_service: TokenService,
     ):
         self.__userform_converter = userform_converter
         self.__user_repository = user_repository
@@ -33,8 +33,11 @@ class UserController:
     def login(self, username: str, password: str) -> User:
         user = self.__user_repository.find_by_username(username=username)
 
+        if not user:
+            raise InvalidUsernamePassword("Invalid username or password")
+
         if not self.__password_service.verify(user, password):
-            raise  InvalidUsernamePassword("Invalid username or password")
+            raise InvalidUsernamePassword("Invalid username or password")
 
         user.token = self.__token_service.generate_toke()
 

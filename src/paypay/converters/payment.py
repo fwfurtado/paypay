@@ -9,7 +9,5 @@ class CreationPaymentToPayment:
             owner=user,
             ref=form.ref,
             amount=form.amount,
-            info=PaymentExtraInfo(
-                callback=form.callback
-            ),
+            info=PaymentExtraInfo(callback=str(form.callback)),
         )

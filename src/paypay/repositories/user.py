@@ -25,11 +25,9 @@ class UserRepository:
         return None
 
     def find_by_token(self, token: str) -> Optional[User]:
-        result  = [
-            user for user in UserRepository.DB.values() if user.token == token
-        ]
+        result = [user for user in UserRepository.DB.values() if user.token == token]
 
         if result:
-            return  result[0]
+            return result[0]
 
         return None
