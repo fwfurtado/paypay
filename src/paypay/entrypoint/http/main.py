@@ -1,7 +1,9 @@
-import uvicorn
+import uvicorn  # type: ignore
 
-from fastapi import FastAPI
-from paypay.entrypoint.http.endpoints import user, payment
+from fastapi import FastAPI, status, Request
+from fastapi.responses import JSONResponse
+from paypay.entrypoint.http.endpoints import user, payment  # type: ignore
+from paypay.entrypoint.http.errors import HTTP_ERRORS  # type: ignore
 
 
 def build_app() -> FastAPI:
@@ -13,6 +15,16 @@ def build_app() -> FastAPI:
 
 
 app = build_app()
+
+
+@app.exception_handler(ValueError)
+async def error_handler(request: Request, error: ValueError):
+    status_code = HTTP_ERRORS.get(type(error), status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return JSONResponse(
+        status_code=status_code,
+        content={"message": error.args[0]},
+    )
 
 
 if __name__ == "__main__":

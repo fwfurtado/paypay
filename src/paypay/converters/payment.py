@@ -5,7 +5,7 @@ from src.paypay.forms.payment import CreationPaymentForm
 class CreationPaymentToPayment:
     def convert(self, form: CreationPaymentForm) -> Payment:
         return Payment(
-            owner=form.user_id,
+            owner=form.user_id,  # type: ignore
             ref=form.ref,
             amount=form.amount,
             info=PaymentExtraInfo(

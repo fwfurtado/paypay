@@ -1,2 +1,6 @@
 class NewlyCreatedPayment(ValueError):
     ...
+
+
+class PaymentNotFound(ValueError):
+    ...
