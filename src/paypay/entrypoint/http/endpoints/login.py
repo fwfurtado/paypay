@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel
 from src.paypay.controllers.user import UserController
 from src.paypay.entrypoint.http.dependencies.user import user_controller
 from src.paypay.exeptions.user import InvalidUsernamePassword, InvalidToken
@@ -9,13 +10,12 @@ from src.paypay.exeptions.user import InvalidUsernamePassword, InvalidToken
 router = APIRouter()
 
 
-@dataclass()
-class AccessToken:
+class AccessToken(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
 
-@router.post("/oauth/token")
+@router.post("/oauth/token", response_model=AccessToken)
 async def login(
     form: OAuth2PasswordRequestForm = Depends(),
     controller: UserController = Depends(user_controller),

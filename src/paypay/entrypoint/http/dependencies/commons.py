@@ -1,5 +1,7 @@
 from argon2 import PasswordHasher #type: ignore
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import  Session
+from src.paypay.repositories.database import SessionLocal
 from src.paypay.infra.password import PasswordService
 from src.paypay.infra.token import TokenService
 
@@ -12,3 +14,11 @@ async def password_service() -> PasswordService:
 
 async def token_service() -> TokenService:
     return TokenService()
+
+def session_factory() -> Session:
+    session = SessionLocal()
+    try:
+        yield session
+        session.commit()
+    except:
+        session.rollback()

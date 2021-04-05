@@ -44,32 +44,32 @@ class PaymentController:
 
         return payment
 
-    def __find_payment_by(self, payment_id: int) -> Payment:
-        payment = self.__repository.find_one(payment_id)
+    def __find_payment_by(self, payment_id: int, user: User) -> Payment:
+        payment = self.__repository.find_one(payment_id, user.id)
 
         if not payment:
             raise PaymentNotFound(f"Cannot find a payment with id {payment_id}")
 
         return payment
 
-    async def confirm(self, payment_id: int) -> Payment:
-        payment = self.__find_payment_by(payment_id=payment_id)
+    async def confirm(self, payment_id: int, user: User) -> Payment:
+        payment = self.__find_payment_by(payment_id=payment_id, user=user)
 
         await sleep(3)
 
         payment.confirm()
 
-        self.__repository.update(payment=payment)
+        self.__repository.save(payment=payment)
 
         return payment
 
-    async def cancel(self, payment_id: int) -> Payment:
-        payment = self.__find_payment_by(payment_id=payment_id)
+    async def cancel(self, payment_id: int, user: User) -> Payment:
+        payment = self.__find_payment_by(payment_id=payment_id, user=user)
 
         await sleep(3)
 
         payment.cancel()
 
-        self.__repository.update(payment=payment)
+        self.__repository.save(payment=payment)
 
         return payment

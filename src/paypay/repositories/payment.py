@@ -1,28 +1,30 @@
 from typing import Dict, Optional
 
+from sqlalchemy.orm import Session
 from src.paypay.models.payment import Payment
+from src.paypay.models.user import User
 
 
 class PaymentRepository:
-    IDENTITY: int = 0
-    DB: Dict[int, Payment] = dict()
+
+    def __init__(self, session: Session):
+        self.__session = session
 
     def save(self, payment: Payment):
-        PaymentRepository.IDENTITY += 1
-        payment.id = PaymentRepository.IDENTITY
-        PaymentRepository.DB[PaymentRepository.IDENTITY] = payment
+        if not payment.id:
+            self.__session.add(payment)
+        else:
+            self.__session.merge(payment)
 
     def anyone_is_same(self, payment: Payment) -> bool:
-        return len([p for p in PaymentRepository.DB.values() if p.is_same(payment)]) > 0
+        for existing_payment in (self.__session.query(Payment).\
+                                 join(User, User.id == Payment.owner_id).\
+                                 filter(Payment.owner_id == payment.owner_id).all()):
+            if existing_payment.is_same(payment):
+                return  True
 
-    def find_one(self, payment_id: int) -> Optional[Payment]:
-        return PaymentRepository.DB.get(payment_id, None)
+        return False
 
-    def update(self, payment: Payment) -> bool:
-        payment_id = payment.id
-
-        if payment_id not in PaymentRepository.DB:
-            return False
-
-        PaymentRepository.DB[payment_id] = payment
-        return True
+    def find_one(self, payment_id: int, owner_id: int) -> Optional[Payment]:
+        return self.__session.query(Payment).join(User, User.id == Payment.owner_id).\
+            filter(Payment.id == payment_id,  Payment.owner_id == owner_id).one_or_none()
