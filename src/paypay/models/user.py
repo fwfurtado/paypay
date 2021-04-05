@@ -1,8 +1,6 @@
-from typing import Optional
-from sqlalchemy import Boolean, Column, ForeignKey, BigInteger, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, BigInteger, String
 
-from src.paypay.repositories.database import Base
+from paypay.infra.database import Base
 
 class User(Base):
     __tablename__ = "users"

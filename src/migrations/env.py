@@ -1,21 +1,9 @@
-import os
-import sys
 from logging.config import fileConfig
-from dotenv import load_dotenv
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
 
 from alembic import context
-
-from src.paypay.models.user import User
-from src.paypay.models.payment import Payment
-from src.paypay.repositories.database import Base, DATABASE_URL
-
-ROOT_PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DOT_ENV_FILE = os.path.join(ROOT_PROJECT_DIR, '.env')
-
-load_dotenv(DOT_ENV_FILE)
+from paypay.infra.database import Base, DATABASE_URL
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -31,6 +19,7 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

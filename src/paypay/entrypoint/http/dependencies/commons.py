@@ -1,7 +1,7 @@
 from argon2 import PasswordHasher #type: ignore
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import  Session
-from src.paypay.repositories.database import SessionLocal
+from paypay.infra.database import SessionLocal
 from src.paypay.infra.password import PasswordService
 from src.paypay.infra.token import TokenService
 

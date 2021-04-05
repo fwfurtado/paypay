@@ -13,6 +13,7 @@ python-multipart = "^0.0.5"
 SQLAlchemy = "^1.4.5"
 alembic = "^1.5.8"
 psycopg2-binary = "^2.8.6"
+pydantic = {extras = ["dotevn"], version = "^1.8.1"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

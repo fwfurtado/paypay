@@ -4,9 +4,8 @@ from typing import Optional
 from sqlalchemy import Column, String, BigInteger, Numeric, DateTime, ForeignKey, Enum as OrmENum
 from sqlalchemy.orm import relationship
 
-from src.paypay.models.user import User
 from src.paypay.exeptions.payment import InvalidPaymentStatusTransition
-from src.paypay.repositories.database import Base
+from paypay.infra.database import Base
 
 FIVE_MINUTES = timedelta(minutes=5)
 
