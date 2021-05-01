@@ -32,7 +32,7 @@ async def error_handler(request: Request, error: ValueError):
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
-        port=GLOBAL_CONFIG.port,
+        port=GLOBAL_CONFIG.app.port,
         host="0.0.0.0",
         reload=True,
         access_log=False,

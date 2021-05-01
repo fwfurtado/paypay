@@ -24,6 +24,7 @@ class DatabaseSettings(BaseSettings):
 class AppSettings(BaseSettings):
     port: int
 
+
 class Settings(BaseModel):
     app: AppSettings
     database_settings: DatabaseSettings
