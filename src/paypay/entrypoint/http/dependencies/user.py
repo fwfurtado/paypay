@@ -7,7 +7,7 @@ from src.paypay.entrypoint.http.dependencies.commons import (
     oauth_scheme,
     password_service,
     token_service,
-    session_factory
+    session_factory,
 )
 from src.paypay.exeptions.user import InvalidToken
 from src.paypay.infra.password import PasswordService
@@ -16,7 +16,9 @@ from src.paypay.models.user import User
 from src.paypay.repositories.user import UserRepository
 
 
-async def user_repository(session: Session = Depends(session_factory) ) -> UserRepository:
+async def user_repository(
+    session: Session = Depends(session_factory),
+) -> UserRepository:
     return UserRepository(session=session)
 
 

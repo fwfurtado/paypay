@@ -11,7 +11,9 @@ async def creation_payment_converter() -> CreationPaymentToPayment:
     return CreationPaymentToPayment()
 
 
-async def payment_repository(session: Session = Depends(session_factory)) -> PaymentRepository:
+async def payment_repository(
+    session: Session = Depends(session_factory),
+) -> PaymentRepository:
     return PaymentRepository(session=session)
 
 

@@ -18,8 +18,8 @@ jobs:
       - name: Install Project Deps
         run: poetry install
       - name: Flake8 Check
-        run: poetry run flake8 src/
+        run: poetry run flake8 src/paypay
       - name: Black Check
-        run: poetry run black --check src/
+        run: poetry run black --check src/paypay
       - name: Mypy Check
-        run: poetry run mypy --config-file pyproject.toml src/
+        run: poetry run mypy --config-file pyproject.toml src/paypay
