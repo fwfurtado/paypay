@@ -1,0 +1,39 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  lint:
+    name: Deploy on Heroku
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.2
+      - name: Login with docker registry
+        run: docker login --username=_ --password=${{ secrets.HEROKU_TOKEN }} registry.heroku.com
+      - name: Build Docker Image
+        run: docker image build -t registry.heroku.com/pay-pay-api/web:$GITHUB_ACTION .
+      - name: Push docker image to registry
+        run: docker image push registry.heroku.com/pay-pay-api/web:$GITHUB_ACTION
+      - name: Export Image ID
+        run: export IMAGE_ID=$(docker image inspect registry.heroku.com/pay-pay-api/web:$GITHUB_ACTION -f {{.Id}} )
+      - name: Deploy
+        run:  |
+          curl -X PATCH \
+          -H "Authorization:Bearer ${{ secrets.HEROKU_TOKEN }}" \
+          -H "Content-Type:application/json" \
+          -H "Accept:application/vnd.heroku+json; version=3.docker-releases" \
+          -d '{ "updates":[{"type":"web",  "docker_image":"$IMAGE_ID"}] }' \
+          https://api.heroku.com/apps/pay-pay-api/formation
