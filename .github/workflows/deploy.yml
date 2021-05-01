@@ -21,22 +21,38 @@ jobs:
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: 1.1.2
-      - name: Login with docker registry
-        uses: docker/login-action@v1
-        with:
-          registry: registry.heroku.com
-          password: ${{ secrets.HEROKU_TOKEN }}
-      - name: Build Docker Image
-        run: docker image build -t registry.heroku.com/pay-pay-api/web:$GITHUB_ACTION .
-      - name: Push docker image to registry
-        run: docker image push registry.heroku.com/pay-pay-api/web:$GITHUB_ACTION
-      - name: Export Image ID
-        run: export IMAGE_ID=$(docker image inspect registry.heroku.com/pay-pay-api/web:$GITHUB_ACTION -f {{.Id}} )
-      - name: Deploy
-        run:  |
-          curl -X PATCH \
-          -H "Authorization:Bearer ${{ secrets.HEROKU_TOKEN }}" \
-          -H "Content-Type:application/json" \
-          -H "Accept:application/vnd.heroku+json; version=3.docker-releases" \
-          -d '{ "updates":[{"type":"web",  "docker_image":"$IMAGE_ID"}] }' \
-          https://api.heroku.com/apps/pay-pay-api/formation
+    - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
+      uses: gonuit/heroku-docker-deploy@v1.3.2 # GitHub action name (leave it as it is).
+      with:
+        # Below you must provide variables for your Heroku app.
+
+        # The email address associated with your Heroku account.
+        # If you don't want to use repository secrets (which is recommended) you can do:
+        # email: my.email@example.com
+#        email: ${{ secrets.HEROKU_EMAIL }}
+
+        # Heroku API key associated with provided user's email.
+        # Api Key is available under your Heroku account settings.
+        heroku_api_key: ${{ secrets.HEROKU_TOKEN }}
+
+        # Name of the heroku application to which the build is to be sent.
+        heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+
+        # (Optional, default: "./")
+        # Dockerfile directory.
+        # For example, if you have a Dockerfile in the root of your project, leave it as follows:
+        dockerfile_directory: ./
+
+        # (Optional, default: "Dockerfile")
+        # Dockerfile name.
+        dockerfile_name: Dockerfile
+
+        # (Optional, default: "")
+        # Additional options of docker build command.
+        docker_options: "--no-cache"
+
+        # (Optional, default: "web")
+        # Select the process type for which you want the docker container to be uploaded.
+        # By default, this argument is set to "web".
+        # For more information look at https://devcenter.heroku.com/articles/process-model
+        process_type: web
