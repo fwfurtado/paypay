@@ -14,4 +14,6 @@ COPY src/ /paypay/src
 
 ENV PYTHONPATH /paypay:/paypay/src
 
+EXPOSE 5000
+
 CMD ["python3", "src/paypay/entrypoint/http/main.py"]

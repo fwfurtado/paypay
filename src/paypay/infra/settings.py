@@ -22,6 +22,7 @@ class DatabaseSettings(BaseModel):
 
 
 class Settings(BaseSettings):
+    port: int
     database_settings: DatabaseSettings
 
 
