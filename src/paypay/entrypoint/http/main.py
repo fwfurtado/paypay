@@ -30,6 +30,10 @@ async def error_handler(request: Request, error: ValueError):
 
 
 if __name__ == "__main__":
+    from os import environ
+    print("")
+    print(environ)
+    print("")
     uvicorn.run(
         "main:app",
         port=GLOBAL_CONFIG.port,
