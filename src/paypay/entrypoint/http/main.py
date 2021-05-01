@@ -32,7 +32,7 @@ async def error_handler(request: Request, error: ValueError):
 if __name__ == "__main__":
     from os import environ
     print("")
-    print(environ)
+    print(GLOBAL_CONFIG.database_settings)
     print("")
     uvicorn.run(
         "main:app",
