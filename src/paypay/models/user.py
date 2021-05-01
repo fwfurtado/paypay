@@ -1,6 +1,6 @@
 from sqlalchemy import Column, BigInteger, String
 
-from paypay.infra.database import Base # type: ignore
+from paypay.infra.database import Base  # type: ignore
 
 
 
