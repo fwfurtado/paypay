@@ -2,8 +2,9 @@ import uvicorn  # type: ignore
 
 from fastapi import FastAPI, status, Request
 from fastapi.responses import JSONResponse
-from paypay.entrypoint.http.endpoints import user, payment, login  # type: ignore
-from paypay.entrypoint.http.errors import HTTP_ERRORS  # type: ignore
+from src.paypay.entrypoint.http.endpoints import user, payment, login
+from src.paypay.entrypoint.http.errors import HTTP_ERRORS
+from src.paypay.infra.settings import GLOBAL_CONFIG
 
 
 def build_app() -> FastAPI:
@@ -29,4 +30,10 @@ async def error_handler(request: Request, error: ValueError):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=5000, host="0.0.0.0", reload=True, access_log=False)
+    uvicorn.run(
+        "main:app",
+        port=GLOBAL_CONFIG.app.port,
+        host="0.0.0.0",
+        reload=True,
+        access_log=False,
+    )

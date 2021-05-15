@@ -24,6 +24,7 @@ pytest-cov = "^2.11.1"
 requests = "^2.25.1"
 selenium = "^3.141.0"
 beautifulsoup4 = "^4.9.3"
+sqlalchemy-stubs = "^0.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
