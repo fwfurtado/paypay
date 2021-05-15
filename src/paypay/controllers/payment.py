@@ -1,3 +1,5 @@
+from typing import List
+
 from asyncio import sleep
 
 from src.paypay.forms.payment import CreationPaymentForm
@@ -16,6 +18,9 @@ class PaymentController:
     ):
         self.__creation_payment_converter = creation_payment_converter
         self.__repository = repository
+
+    def list_user_payments(self, user: User) -> List[Payment]:
+        return self.__repository.find_all_by_user(owner_id=user.id)
 
     def __create_payment(self, form: CreationPaymentForm, user: User) -> Payment:
         payment = self.__creation_payment_converter.convert(form=form, user=user)

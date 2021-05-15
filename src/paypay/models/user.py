@@ -2,6 +2,7 @@ from sqlalchemy import Column, BigInteger, String
 
 from paypay.infra.database import Base
 
+
 class User(Base):
     __tablename__ = "users"
 

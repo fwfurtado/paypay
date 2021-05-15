@@ -17,7 +17,7 @@ class DatabaseSettings(BaseModel):
             port=str(self.port),
             user=self.username,
             password=self.password,
-            path='/' + self.name
+            path="/" + self.name,
         )
 
 
@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     database_settings: DatabaseSettings
 
 
-def get_settings(env_file=f'{PROJECT_ROOT_PATH}/.env') -> Settings:
+def get_settings(env_file=f"{PROJECT_ROOT_PATH}/.env") -> Settings:
     return Settings(_env_file=env_file)
 
 

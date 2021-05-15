@@ -6,7 +6,6 @@ from src.paypay.models.user import User
 
 
 class PaymentRepository:
-
     def __init__(self, session: Session):
         self.__session = session
 
@@ -16,15 +15,30 @@ class PaymentRepository:
         else:
             self.__session.merge(payment)
 
+    def find_all_by_user(self, owner_id: int) -> List[Payment]:
+        return (
+            self.__session.query(Payment)
+            .join(User, User.id == Payment.owner_id)
+            .filter(Payment.owner_id == owner_id)
+            .all()
+        )
+
     def anyone_is_same(self, payment: Payment) -> bool:
-        for existing_payment in (self.__session.query(Payment).\
-                                 join(User, User.id == Payment.owner_id).\
-                                 filter(Payment.owner_id == payment.owner_id).all()):
+        for existing_payment in (
+            self.__session.query(Payment)
+            .join(User, User.id == Payment.owner_id)
+            .filter(Payment.owner_id == payment.owner_id)
+            .all()
+        ):
             if existing_payment.is_same(payment):
-                return  True
+                return True
 
         return False
 
     def find_one(self, payment_id: int, owner_id: int) -> Optional[Payment]:
-        return self.__session.query(Payment).join(User, User.id == Payment.owner_id).\
-            filter(Payment.id == payment_id,  Payment.owner_id == owner_id).one_or_none()
+        return (
+            self.__session.query(Payment)
+            .join(User, User.id == Payment.owner_id)
+            .filter(Payment.id == payment_id, Payment.owner_id == owner_id)
+            .one_or_none()
+        )

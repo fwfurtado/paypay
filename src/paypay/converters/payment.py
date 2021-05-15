@@ -12,5 +12,5 @@ class CreationPaymentToPayment:
             ref=form.ref,
             amount=form.amount,
             info=[PaymentExtraInfo(attribute="callback", value=form.callback)],
-            created_at=datetime.now()
+            created_at=datetime.now(),
         )
