@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy.orm import Session
 from src.paypay.models.payment import Payment
