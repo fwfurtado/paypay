@@ -34,6 +34,7 @@ class PaymentController:
 
     async def online_pay(self, form: CreationPaymentForm, user: User) -> Payment:
         payment = self.__create_payment(form=form, user=user)
+        self.__repository.save(payment=payment)
         await sleep(3)
 
         payment.confirm()
