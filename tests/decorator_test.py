@@ -1,3 +1,5 @@
+import pytest
+
 def math(operator):
     def inner(a, b):
         return operator(a, b)
@@ -56,6 +58,7 @@ class Test:
         if item == "blah":
             return self.blah()
 
+@pytest.mark.skip()
 def test_test():
     t = Test()
     t.blah = 2
