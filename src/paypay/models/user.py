@@ -1,6 +1,7 @@
 from sqlalchemy import Column, BigInteger, String
 
-from paypay.infra.database import Base
+from paypay.infra.database import Base # type: ignore
+
 
 
 class User(Base):
